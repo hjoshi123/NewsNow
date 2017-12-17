@@ -26,4 +26,9 @@
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.FullScreen">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

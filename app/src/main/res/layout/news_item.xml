@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:id="@+id/newsImage"
+        tools:src="@drawable/common_google_signin_btn_icon_dark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_weight="4"
+        android:id="@+id/newsTitle"
+        tools:text="Lorem ipsum Loremupsim Lorem upsim"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:stateListAnimator="@animator/scale"
+        android:layout_margin="8dp"
+        android:id="@+id/favClick"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:button="@null"
+        android:focusable="true"
+        android:background="@drawable/like_icon" />
+
+    </LinearLayout>

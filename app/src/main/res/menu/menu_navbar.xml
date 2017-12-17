@@ -16,8 +16,8 @@
             android:title="Science" />
 
         <item
-            android:id="@+id/world"
-            android:title="International" />
+            android:id="@+id/buzz"
+            android:title="Buzzfeed" />
 
         <item
             android:id="@+id/business"
@@ -31,6 +31,13 @@
             android:id="@+id/sports"
             android:title="Sports" />
 
+        <item
+            android:id="@+id/world"
+            android:title="World" />
+
+        <item
+            android:id="@+id/fav"
+            android:title="Favorites" />
     </group>
 
 </menu>

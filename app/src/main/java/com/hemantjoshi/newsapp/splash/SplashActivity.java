@@ -1,13 +1,21 @@
-package com.hemantjoshi.newsapp.ui;
+package com.hemantjoshi.newsapp.splash;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hemantjoshi.newsapp.R;
+import com.hemantjoshi.newsapp.login.LoginActivity;
+import com.hemantjoshi.newsapp.newsmain.MainActivity;
 
+/**
+ * @author HemantJ
+ * SplashActivity is the {@link android.app.LauncherActivity} that checks if the user is logged in or not
+ * and redirects the user accordingly
+ */
 public class SplashActivity extends AppCompatActivity {
+    private static final int ACCESS_FINE_LOC = 1;
     private FirebaseAuth mAuth;
     private SplashPresenter splashPresenter;
 

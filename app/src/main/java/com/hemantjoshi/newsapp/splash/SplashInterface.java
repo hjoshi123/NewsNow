@@ -1,4 +1,4 @@
-package com.hemantjoshi.newsapp.ui;
+package com.hemantjoshi.newsapp.splash;
 
 /**
  * Created by HemantJ on 25/10/17.

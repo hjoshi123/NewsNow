@@ -1,14 +1,14 @@
-package com.hemantjoshi.newsapp.ui;
+package com.hemantjoshi.newsapp.login;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.hemantjoshi.newsapp.model.User;
 
 /**
  * Created by HemantJ on 24/10/17.
  */
 
 public interface LoginInterface {
+    /**
+     * @param result contains the signed in details of the user
+     */
     void getAuthWithGoogle(GoogleSignInResult result);
-    User processLoginDetails(User details);
 }
