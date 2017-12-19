@@ -2,6 +2,11 @@ package com.hemantjoshi.newsapp.newsmain;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,7 +36,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.hemantjoshi.newsapp.NewsDetailsActivity;
 import com.hemantjoshi.newsapp.R;
 import com.hemantjoshi.newsapp.model.NewsModel;
+import com.hemantjoshi.newsapp.settings.SettingsActivity;
 import com.hemantjoshi.newsapp.utils.DividerItemDecoration;
+import com.hemantjoshi.newsapp.utils.ReminderUtility;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +51,7 @@ import java.util.Random;
  * @version 1.0
  */
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, MainActivityView {
+        NavigationView.OnNavigationItemSelectedListener, MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
     * Declaration of required variables
@@ -130,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.syncState();
         presenter.setUserData();
+        ReminderUtility.scheduleReminder(this);
 
         newsAdapter = new NewsAdapter(MainActivity.this);
         recyclerView.setAdapter(newsAdapter);
@@ -137,6 +146,40 @@ public class MainActivity extends AppCompatActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
         newsAdapter.notifyDataSetChanged();
+        setUpSharedPreferences();
+    }
+
+    /**
+     * This method gets the default location from the settings and accordingly loads up the
+     * news of the area
+     * Also starts services according to the user choice
+     * @version 1.0 supports only cities
+     * @return nothing
+     */
+    private void setUpSharedPreferences() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String location = prefs.getString(getString(R.string.location_key),
+                getString(R.string.location_key_default));
+        if(!location.equals(getString(R.string.location_key_default))){
+            nothingText.setVisibility(View.GONE);
+            presenter.getNewsFromNewsAPI(GOOGLE_NEWS_SEARCH, location);
+            if(imageView.getDrawable() != null)
+                imageView.setVisibility(View.VISIBLE);
+            newsAdapter.notifyDataSetChanged();
+        }else{
+            nothingText.setVisibility(View.VISIBLE);
+        }
+        String choice = prefs.getString(getString(R.string.notificationlist), "toi");
+
+        Intent intent = new Intent(MainActivity.this, NewsIntentService.class);
+        Log.d("MainActivity",choice);
+        if(choice.equals("toi")){
+            intent.setAction(ReminderTasks.ACTION_TOI);
+        }else if(choice.equals("verge")){
+            intent.setAction(ReminderTasks.ACTION_VERGE);
+        }
+
+        startService(intent);
     }
 
     @Override
@@ -244,6 +287,11 @@ public class MainActivity extends AppCompatActivity implements
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * This function is responsible for creating the menu
+     * @param menu inflation of menu
+     * @return boolean whether the menu is created or not
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -271,6 +319,20 @@ public class MainActivity extends AppCompatActivity implements
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * This method is responsible for selecting that
+     * @param item the item that is selected
+     * @return boolean for the item that is selected
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.settings){
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void addNewsData(ArrayList<NewsModel> news) {
         for(NewsModel model : news){
@@ -279,6 +341,31 @@ public class MainActivity extends AppCompatActivity implements
         newsAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.location_key))){
+            String location = sharedPreferences.getString(getString(R.string.location_key),
+                    getString(R.string.location_key_default));
+            if(!location.equals(getString(R.string.location_key_default))){
+                newsData.clear();
+                presenter.getNewsFromNewsAPI(GOOGLE_NEWS_SEARCH, location);
+                if(imageView.getDrawable() != null)
+                    imageView.setVisibility(View.VISIBLE);
+                newsAdapter.notifyDataSetChanged();
+            }
+        }
+        String choice = sharedPreferences.getString(getString(R.string.notificationlist), "toi");
+
+        Intent intent = new Intent(MainActivity.this, NewsIntentService.class);
+        Log.d("MainActivity",choice);
+        if(choice.equals("toi")){
+            intent.setAction(ReminderTasks.ACTION_TOI);
+        }else if(choice.equals("verge")){
+            intent.setAction(ReminderTasks.ACTION_VERGE);
+        }
+
+        startService(intent);
+    }
 
     /*
      * Adapter for the news listing from the API
@@ -406,6 +493,7 @@ public class MainActivity extends AppCompatActivity implements
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             NewsModel model = dataSnapshot.getValue(NewsModel.class);
                             if(favNews.contains(model.getTitle())){
+                                dataSnapshot.getRef().child("title").removeValue();
                                 favNews.remove(model.getTitle());
                             }
                         }

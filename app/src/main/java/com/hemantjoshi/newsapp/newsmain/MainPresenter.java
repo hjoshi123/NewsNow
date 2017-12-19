@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 /**
  * @presenter for MainActivity
- * @author HemantJ on 28/10/17.
+ * @author HemantJ.
  */
 
 public class MainPresenter implements MainInterface {
@@ -102,8 +102,9 @@ public class MainPresenter implements MainInterface {
             url = URL_BASE + src + API_KEY;
             requestJSONData(url);
         }else if(id == R.id.world){
+            String URL_EDIT = "https://newsapi.org/v2/top-headlines?sources=";
             src = "reuters";
-            url = URL_BASE + src + API_KEY;
+            url = URL_EDIT + src + API_KEY;
             requestJSONData(url);
         }else if(id == R.id.business){
             src = "bloomberg";

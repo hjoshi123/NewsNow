@@ -34,6 +34,10 @@ public class CustomIntro extends AppIntro2 {
                 "Search topic and get news accordinly",
                 R.drawable.ic_search_black_96dp,
                 getColor(R.color.colorAccent)));
+        addSlide(AppIntro2Fragment.newInstance("Get notifications",
+                "Get notifications of latest news without opening the app",
+                R.drawable.ic_notifications_black_96dp,
+                getColor(R.color.accent)));
     }
 
     /**

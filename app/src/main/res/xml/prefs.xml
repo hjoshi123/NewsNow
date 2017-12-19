@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Location Services"
+        android:layout="@layout/preflayout">
+
+        <EditTextPreference
+            android:dialogLayout="@layout/edit_text_custom"
+            android:id="@+id/locationedittext"
+            android:summary="Enter the location"
+            android:key="@string/location_key"
+            android:title="Enter the location"
+            android:defaultValue="@string/location_key_default"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Notifications and Others"
+        android:layout="@layout/preflayout">
+
+        <ListPreference
+            android:summary="Choose the notification provider"
+            android:key="@string/notificationlist"
+            android:entries="@array/listentries"
+            android:entryValues="@array/listentries_value"
+            android:title="Choose for notifications" />
+
+    </PreferenceCategory>
+
+    <Preference
+        android:key="@string/about_us"
+        android:id="@+id/about_us"
+        android:title="About Us"
+        android:summary="About the App Developer and Credits" >
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.hemantjoshi.newsapp"
+            android:targetClass="com.hemantjoshi.newsapp.AboutUsActivity"/>
+
+    </Preference>
+
+</PreferenceScreen>

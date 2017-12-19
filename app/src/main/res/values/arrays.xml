@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listentries" >
+        <item>Times of India/National</item>
+        <item>Technology</item>
+        <item>Reuters/International</item>
+    </string-array>
+
+    <string-array name="listentries_value">
+        <item>toi</item>
+        <item>verge</item>
+        <item>reuters</item>
+    </string-array>
+</resources>
