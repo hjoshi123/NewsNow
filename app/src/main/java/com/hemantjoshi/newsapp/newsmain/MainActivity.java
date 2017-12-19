@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if(id == R.id.politics){
-            getSupportActionBar().setTitle("Politics");
+            getSupportActionBar().setTitle("National");
             executeFunctionsForMenu(id);
             return true;
         }else if(id == R.id.tech){
