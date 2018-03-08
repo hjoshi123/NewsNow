@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">News Now</string>
+    <string name="web_client_id">591981199843-97kvj354l335frhsm3oro8fqkio6r3ag.apps.googleusercontent.com</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="location_key">location</string>
+    <string name="location_key_default">null0</string>
+    <string name="notificationlist">notification_list</string>
+    <string name="about_us">about_us</string>
+</resources>
