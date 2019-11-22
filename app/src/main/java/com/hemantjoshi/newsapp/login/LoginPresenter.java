@@ -1,7 +1,8 @@
 package com.hemantjoshi.newsapp.login;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -36,23 +37,21 @@ public class LoginPresenter implements LoginInterface {
      * it to start a new activity with the user signed in.
      */
     @Override
-    public void getAuthWithGoogle(final GoogleSignInResult result) {
-        if(result.isSuccess()){
-            final GoogleSignInAccount account = result.getSignInAccount();
-            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                String email = task.getResult().getUser().getEmail();
-                                String dispName = task.getResult().getUser().getDisplayName();
-                                activity.startMainActivity();
-                            }else{
+    public void getAuthWithGoogle(final GoogleSignInAccount result) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(result.getIdToken(),null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            String email = task.getResult().getUser().getEmail();
+                            String dispName = task.getResult().getUser().getDisplayName();
+                            Log.d("LoginPresenter", email);
+                            activity.startMainActivity();
+                        }else{
 
-                            }
                         }
-                    });
-        }
+                    }
+                });
     }
 }

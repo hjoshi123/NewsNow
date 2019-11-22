@@ -1,19 +1,26 @@
 package com.hemantjoshi.newsapp.login;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hemantjoshi.newsapp.R;
 import com.hemantjoshi.newsapp.newsmain.MainActivity;
@@ -24,11 +31,11 @@ import com.hemantjoshi.newsapp.newsmain.MainActivity;
  */
 
 public class LoginActivity extends AppCompatActivity implements
-        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+        View.OnClickListener  {
     private Toolbar toolbar;
     private SignInButton signInButton;
     private final int RC_SIGN_IN = 123;
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
     private LoginPresenter presenter;
     private FirebaseAuth mAuth;
@@ -50,28 +57,21 @@ public class LoginActivity extends AppCompatActivity implements
         presenter = new LoginPresenter(mAuth,LoginActivity.this);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_client_id))
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if(id == R.id.googleSignIn){
-            Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            Log.d("LoginActivity", "Enterred here");
+            Intent intent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(intent,RC_SIGN_IN);
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Couldn't connect to internet.\n Please try again", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -85,8 +85,15 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RC_SIGN_IN){
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            presenter.getAuthWithGoogle(result);
+            try {
+                Task task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                final GoogleSignInAccount account = (GoogleSignInAccount) task.getResult(ApiException.class);
+                presenter.getAuthWithGoogle(account);
+            } catch (ApiException e) {
+                Log.d("LoginActivity", e.getMessage());
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
     }
 

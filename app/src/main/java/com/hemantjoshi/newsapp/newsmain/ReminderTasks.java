@@ -1,9 +1,8 @@
 package com.hemantjoshi.newsapp.newsmain;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,7 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.hemantjoshi.newsapp.model.NewsModel;
 import com.hemantjoshi.newsapp.utils.NotificationUtils;
 
 import org.json.JSONArray;

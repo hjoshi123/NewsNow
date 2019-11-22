@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "591981199843-07f03n61voaa4qa92chahig5morv4frp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hemantjoshi.newsapp",
+            "certificate_hash": "10958227d338a11433f0e44e70d755a2d8dc6c4a"
+          }
+        },
+        {
           "client_id": "591981199843-5mms91of176f41hltep5rvp1gaaumvkr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -29,24 +37,17 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDwUjNKBtEfocpnMMOEiKR4THZWm3sPq7A"
+          "current_key": "AIzaSyBWZJvctw1R9IgpbuknhRd4BG7ZWp7Lyko"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "591981199843-97kvj354l335frhsm3oro8fqkio6r3ag.apps.googleusercontent.com",
+              "client_id": "591981199843-gr1cif264qsl05as7m02mqahrn8catp4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

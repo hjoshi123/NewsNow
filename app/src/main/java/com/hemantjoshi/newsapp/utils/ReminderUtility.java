@@ -1,7 +1,7 @@
 package com.hemantjoshi.newsapp.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
